@@ -99,6 +99,8 @@ export class FirestoreService {
       id: doc.id,
       path: doc.ref.path,
       data: (doc.data() as Record<string, unknown>) ?? {},
+      createTime: doc.createTime?.toDate().toISOString(),
+      updateTime: doc.updateTime?.toDate().toISOString(),
     };
   }
 }

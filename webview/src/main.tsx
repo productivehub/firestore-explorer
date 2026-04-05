@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { CollectionView } from "./components/CollectionView";
-import { DocumentEditor } from "./components/DocumentEditor";
 import { QueryBuilder } from "./components/QueryBuilder";
 import "./styles/index.css";
 
@@ -25,12 +24,8 @@ function App() {
         />
       );
     case "document":
-      return (
-        <DocumentEditor
-          connectionName={data.connectionName as string}
-          docPath={data.docPath as string}
-        />
-      );
+      // Documents now open in VS Code's native JSON editor
+      return <div>Document opened in editor</div>;
     case "queryBuilder":
       return <QueryBuilder connectionName={data.connectionName as string} />;
     default:

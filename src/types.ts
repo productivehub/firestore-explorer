@@ -25,6 +25,8 @@ export interface FirestoreDoc {
   path: string;
   data: Record<string, unknown>;
   subCollections?: string[];
+  createTime?: string;
+  updateTime?: string;
 }
 
 export interface QueryClause {
