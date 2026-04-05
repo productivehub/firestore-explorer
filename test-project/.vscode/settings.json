@@ -1,0 +1,31 @@
+{
+  "firestoreExplorer.connections": [
+    {
+      "name": "local-emulator",
+      "type": "emulator",
+      "host": "localhost",
+      "port": 9030,
+      "projectId": "guestwho-7e1f2y"
+    },
+    {
+      "name": "prod",
+      "type": "production",
+      "serviceAccountPath": ".secrets/service-account.json"
+    }
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/flutter/ephemeral": true,
+    "**/Flutter/ephemeral": true,
+    "**/.symlinks": true,
+    "**/.plugin_symlinks": true,
+    "**/.retool_types/**": true,
+    "**/*tsconfig.json": true,
+    ".cache": true,
+    "retool.config.json": true
+  }
+}

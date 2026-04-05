@@ -1,0 +1,21 @@
+node_modules/
+dist/
+webview/dist/
+*.vsix
+.firestore/
+docs/
+.claude/
+
+# Secrets — never commit service account keys or credentials
+**/.secrets/
+*.pem
+*.key
+service-account*.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+coverage/
