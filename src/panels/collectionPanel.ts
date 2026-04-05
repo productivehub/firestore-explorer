@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import type { ConnectionManager } from "../services/connectionManager";
 import { FirestoreService } from "../services/firestoreService";
+import type { FirestoreFileSystemProvider } from "../providers/firestoreFileSystemProvider";
 import type { WebviewToHostMessage } from "../types";
 
 export class CollectionPanel {
@@ -11,6 +12,7 @@ export class CollectionPanel {
   constructor(
     private context: vscode.ExtensionContext,
     private connectionManager: ConnectionManager,
+    private fsProvider: FirestoreFileSystemProvider,
     connectionName: string,
     collectionPath: string
   ) {
@@ -74,10 +76,11 @@ export class CollectionPanel {
           break;
         }
         case "openDocument": {
-          // Open document editor panel
+          // Open document in VS Code's native JSON editor with metadata panel
           new (await import("./documentEditorPanel")).DocumentEditorPanel(
             this.context,
             this.connectionManager,
+            this.fsProvider,
             msg.connectionName,
             msg.docPath
           );

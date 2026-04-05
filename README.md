@@ -98,6 +98,24 @@ All commands are available via the command palette (`⇧⌘P` / `Ctrl+Shift+P`):
 | `Firestore: Open Query Builder` | Launch the visual query builder |
 | `Firestore: Refresh Connections` | Refresh the sidebar tree |
 
+## Table Keyboard Navigation
+
+Click any cell to select it, then navigate with the keyboard:
+
+| Key | Action |
+|---|---|
+| `Arrow keys` | Move between cells |
+| `Home` | Jump to first cell (ID) in current row |
+| `End` | Jump to last cell in current row |
+| `Ctrl/⌘ + Home` | Jump to first cell in table |
+| `Ctrl/⌘ + End` | Jump to last cell in table |
+| `Ctrl/⌘ + ↑/↓` | Jump to first/last row |
+| `Ctrl/⌘ + ←/→` | Scroll viewport one screen left/right |
+| `Tab` / `Shift+Tab` | Next/previous cell (wraps across rows) |
+| `PageUp` / `PageDown` | Move 10 rows up/down |
+| `Enter` | Open document (when ID cell is selected) |
+| `Escape` | Clear selection |
+
 ## Requirements
 
 - VS Code **1.85** or later

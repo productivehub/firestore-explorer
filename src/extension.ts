@@ -10,6 +10,7 @@ import { SavedQueriesTreeProvider } from "./providers/savedQueriesTreeProvider";
 import { CollectionPanel } from "./panels/collectionPanel";
 import { QueryBuilderPanel } from "./panels/queryBuilderPanel";
 import { DocumentEditorPanel } from "./panels/documentEditorPanel";
+import { FirestoreFileSystemProvider } from "./providers/firestoreFileSystemProvider";
 import type { ConnectionConfig } from "./types";
 
 let connectionManager: ConnectionManager;
@@ -17,6 +18,14 @@ let connectionManager: ConnectionManager;
 export function activate(context: vscode.ExtensionContext) {
   connectionManager = new ConnectionManager();
   const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
+  // Register firestore: virtual file system
+  const fsProvider = new FirestoreFileSystemProvider(connectionManager);
+  context.subscriptions.push(
+    vscode.workspace.registerFileSystemProvider("firestore", fsProvider, {
+      isCaseSensitive: true,
+    })
+  );
 
   // Tree providers
   const connectionTreeProvider = new ConnectionTreeProvider(connectionManager);
@@ -127,7 +136,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "firestoreExplorer.openCollection",
       (connectionName: string, collectionPath: string) => {
-        new CollectionPanel(context, connectionManager, connectionName, collectionPath);
+        new CollectionPanel(context, connectionManager, fsProvider, connectionName, collectionPath);
       }
     ),
 
