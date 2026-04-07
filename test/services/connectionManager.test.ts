@@ -8,8 +8,12 @@ vi.mock("firebase-admin", () => {
     listCollections: vi.fn().mockResolvedValue([]),
     settings: vi.fn(),
   };
+  const mockAuth = {
+    listUsers: vi.fn().mockResolvedValue({ users: [] }),
+  };
   const mockApp = {
     firestore: vi.fn().mockReturnValue(mockFirestore),
+    auth: vi.fn().mockReturnValue(mockAuth),
     delete: vi.fn().mockResolvedValue(undefined),
   };
   return {
