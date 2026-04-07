@@ -28,14 +28,40 @@ export class AuthService {
 
   async listUsers(maxResults = 100, pageToken?: string): Promise<AuthListResult> {
     const result = await this.authInstance.listUsers(maxResults, pageToken);
-    return {
-      users: result.users.map((u) => this.toAuthUser(u)),
-      pageToken: result.pageToken,
-    };
+    const users = result.users
+      .map((u) => this.toAuthUser(u))
+      .sort((a, b) => {
+        // Sort by last sign-in time, most recent first
+        const aTime = a.metadata.lastSignInTime ? new Date(a.metadata.lastSignInTime).getTime() : 0;
+        const bTime = b.metadata.lastSignInTime ? new Date(b.metadata.lastSignInTime).getTime() : 0;
+        return bTime - aTime;
+      });
+    return { users, pageToken: result.pageToken };
   }
 
   async getUser(uid: string): Promise<AuthUser> {
     const record = await this.authInstance.getUser(uid);
+    return this.toAuthUser(record);
+  }
+
+  async searchUser(query: string): Promise<AuthUser> {
+    // Try UID first, then email, then phone
+    const trimmed = query.trim();
+
+    // Email pattern
+    if (trimmed.includes("@")) {
+      const record = await this.authInstance.getUserByEmail(trimmed);
+      return this.toAuthUser(record);
+    }
+
+    // Phone pattern (starts with +)
+    if (trimmed.startsWith("+")) {
+      const record = await this.authInstance.getUserByPhoneNumber(trimmed);
+      return this.toAuthUser(record);
+    }
+
+    // Default: try as UID
+    const record = await this.authInstance.getUser(trimmed);
     return this.toAuthUser(record);
   }
 

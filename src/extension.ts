@@ -289,7 +289,20 @@ return db.collection("").limit(10).get();
       }
     }),
 
-    vscode.commands.registerCommand("firestoreExplorer.openAuth", (connectionName: string) => {
+    vscode.commands.registerCommand("firestoreExplorer.openAuth", async (connectionName: string) => {
+      // Auto-connect if not yet connected
+      const state = connectionManager.getState(connectionName);
+      if (state && state.status !== "connected") {
+        try {
+          await connectionManager.connect(resolveConnection(state.config));
+          connectionTreeProvider.refresh();
+          authTreeProvider.refresh();
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          vscode.window.showErrorMessage(`Failed to connect to ${connectionName}: ${msg}`);
+          return;
+        }
+      }
       new AuthPanel(context, connectionManager, connectionName);
     }),
 
