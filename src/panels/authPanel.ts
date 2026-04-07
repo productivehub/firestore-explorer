@@ -113,7 +113,7 @@ class AuthUserPanel {
     this.panel = vscode.window.createWebviewPanel(
       "firestoreAuthUser",
       `User: ${uid}`,
-      vscode.ViewColumn.One,
+      vscode.ViewColumn.Two,
       { enableScripts: false }
     );
 

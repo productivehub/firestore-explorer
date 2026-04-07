@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useVsCodeMessages } from "../hooks/useVsCodeMessages";
 import type { AuthUser } from "./authTypes";
 
@@ -9,12 +9,11 @@ interface AuthViewProps {
 export function AuthView({ connectionName }: AuthViewProps) {
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [viewMode, setViewMode] = useState<"table" | "json">("table");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pageToken, setPageToken] = useState<string | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
 
   const onMessage = useCallback((msg: any) => {
     switch (msg.type) {
@@ -28,7 +27,6 @@ export function AuthView({ connectionName }: AuthViewProps) {
         setLoading(false);
         setLoadingMore(false);
         setError(null);
-        setHasSearched(true);
         break;
       }
       case "searchResult": {
@@ -36,20 +34,25 @@ export function AuthView({ connectionName }: AuthViewProps) {
         setPageToken(undefined);
         setLoading(false);
         setError(null);
-        setHasSearched(true);
         break;
       }
       case "error": {
         setLoading(false);
         setLoadingMore(false);
         setError(msg.message);
-        setHasSearched(true);
         break;
       }
     }
   }, [loadingMore]);
 
   const { postMessage } = useVsCodeMessages(onMessage);
+
+  // Load first 100 users on mount
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    postMessage({ type: "fetchUsers", connectionName, limit: 100 });
+  }, [connectionName, postMessage]);
 
   function handleSearch() {
     const q = searchQuery.trim();
@@ -97,7 +100,7 @@ export function AuthView({ connectionName }: AuthViewProps) {
         </button>
       </div>
 
-      {hasSearched && !loading && !error && users.length > 0 && (
+      {!loading && !error && users.length > 0 && (
         <div className="collection-toolbar">
           <div className="view-toggle">
             <button
@@ -117,13 +120,7 @@ export function AuthView({ connectionName }: AuthViewProps) {
       )}
 
       <div className="collection-content">
-        {!hasSearched && !loading ? (
-          <div className="empty-state">
-            <div className="empty-icon">🔍</div>
-            <div className="empty-text">Search for users or leave empty to list all</div>
-            <div className="empty-connection">Connection: <strong>{connectionName}</strong></div>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <div className="loading-state">
             <div className="spinner" />
             <div className="loading-text">Loading users…</div>
@@ -200,7 +197,7 @@ export function AuthView({ connectionName }: AuthViewProps) {
 
       <div className="status-bar">
         <span className="status-connection">{connectionName}</span>
-        {hasSearched && !loading && ` · ${users.length} user${users.length !== 1 ? "s" : ""}`}
+        {!loading && ` · ${users.length} user${users.length !== 1 ? "s" : ""}`}
       </div>
     </div>
   );
