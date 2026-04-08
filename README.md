@@ -1,6 +1,16 @@
-# Firestore Explorer
+<p align="center">
+  <img src="resources/icon.png" alt="Firestore Explorer" width="128" />
+</p>
 
+<h1 align="center">Firestore Explorer</h1>
+
+<p align="center">
 Browse, edit, and query Firestore databases directly from VS Code — no more tab-hopping between your editor and the Firebase console.
+</p>
+
+<p align="center">
+  <a href="https://productivehub.com">productivehub.com</a>
+</p>
 
 ## Features
 
@@ -12,6 +22,7 @@ Browse, edit, and query Firestore databases directly from VS Code — no more ta
 - **Sub-collection navigation** — breadcrumb-driven drill-down through nested paths
 - **Visual query builder** — compose `where` / `orderBy` / `limit` clauses with bidirectional JavaScript sync
 - **Saved queries** — persist queries as `.js` files you can version-control alongside your project
+- **Auth management** — browse, search, disable, and delete Firebase Auth users directly from the sidebar
 - **Loading indicators** — live status and spinners while large collections stream in
 
 ## Installation
@@ -96,6 +107,8 @@ All commands are available via the command palette (`⇧⌘P` / `Ctrl+Shift+P`):
 | `Firestore: Remove Connection` | Delete a connection from settings |
 | `Firestore: Open Collection` | Open a collection in a new editor tab |
 | `Firestore: Open Query Builder` | Launch the visual query builder |
+| `Firestore: Open Auth Users` | Browse and manage Firebase Auth users |
+| `Firestore: Refresh Auth` | Refresh the auth users list |
 | `Firestore: Refresh Connections` | Refresh the sidebar tree |
 
 ## Table Keyboard Navigation
@@ -131,4 +144,4 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for developmen
 
 ## License
 
-[MIT](LICENSE) © ProductiveHub
+[MIT](LICENSE) © [ProductiveHub](https://productivehub.com)
